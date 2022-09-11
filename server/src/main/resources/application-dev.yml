@@ -1,0 +1,9 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/bby
+    username: bby
+    password: leftfinger-rightfinger
+  flyway:
+    url: jdbc:postgresql://localhost:5432/bby
+    user: bby
+    password: leftfinger-rightfinger
