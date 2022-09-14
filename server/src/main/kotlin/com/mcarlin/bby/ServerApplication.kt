@@ -2,14 +2,20 @@ package com.mcarlin.bby
 
 import org.flywaydb.core.Flyway
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.core.env.Environment
+import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.web.reactive.config.CorsRegistry
 import org.springframework.web.reactive.config.WebFluxConfigurer
 import org.springframework.web.reactive.config.WebFluxConfigurerComposite
 
 @SpringBootApplication
+@EnableScheduling
+@EnableConfigurationProperties
+@ConfigurationPropertiesScan
 class ServerApplication(val env: Environment) {
 	@Bean
 	fun corsConfigurer(): WebFluxConfigurer {

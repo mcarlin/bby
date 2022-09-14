@@ -16,21 +16,22 @@ import java.time.LocalDateTime
 interface UrlDao: CoroutineCrudRepository<Url, Long>, CustomUrlDao
 
 interface CustomUrlDao {
-    suspend fun findAllExpired(): Flow<Url>
+    fun findAllExpired(): Flow<Url>
 }
 
 @Language("PostgreSQL")
 const val FIND_EXPIRED = """
     select *
     from url
-    where url.ttl < LOCALTIMESTAMP AT TIME ZONE 'UTC'
+    where url.ttl < current_timestamp AT TIME ZONE 'UTC'
 """
 
+@Suppress("unused")
 class CustomUrlDaoImpl (
     private val client: DatabaseClient,
     private val converter: MappingR2dbcConverter,
 ): CustomUrlDao {
-    override suspend fun findAllExpired(): Flow<Url> {
+    override fun findAllExpired(): Flow<Url> {
         return client.sql(FIND_EXPIRED)
             .map { row, meta -> converter.read(Url::class.java, row, meta) }
             .flow()
@@ -41,7 +42,7 @@ class CustomUrlDaoImpl (
 data class Url(
     @Id val url_id: Long,
     val url: String,
-    val ttl: LocalDateTime?
+    val ttl: LocalDateTime
 ) : Persistable<Long> {
     override fun getId(): Long = url_id
     override fun isNew(): Boolean = true

@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	id("org.springframework.boot") version "3.0.0-M4"
-	id("io.spring.dependency-management") version "1.0.12.RELEASE"
+	id("io.spring.dependency-management") version "1.0.13.RELEASE"
 	kotlin("jvm") version "1.7.10"
 	kotlin("plugin.spring") version "1.7.10"
 }
@@ -27,6 +27,7 @@ dependencies {
 	implementation("org.postgresql:postgresql")
 	implementation("org.postgresql:r2dbc-postgresql:1.0.0.RC1")
 	implementation("io.r2dbc:r2dbc-spi:1.0.0.RELEASE")
+	implementation("io.r2dbc:r2dbc-proxy:1.0.0.RELEASE")
 
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -34,7 +35,9 @@ dependencies {
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
 	implementation("org.springframework:spring-jdbc")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

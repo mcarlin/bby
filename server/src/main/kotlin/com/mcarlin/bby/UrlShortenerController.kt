@@ -22,8 +22,10 @@ class UrlShortenerController (
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     suspend fun shorten(@RequestBody request: ShortenedUrlRequest): ResponseEntity<ShortenedUrlResponse> {
-        val shortenedUrl = shortenerService.shorten(request.url, request.ttl)!!
-        return ResponseEntity.ok(ShortenedUrlResponse(shortenedUrl, request.ttl))
+        val ttl = request.ttl ?: LocalDateTime.now().plusDays(1)
+
+        val shortenedUrl =  shortenerService.shorten(request.url, ttl)!!
+        return ResponseEntity.ok(ShortenedUrlResponse(shortenedUrl, ttl))
     }
 
     @GetMapping("/{someId}")
@@ -46,5 +48,5 @@ data class ShortenedUrlRequest (
 
 data class ShortenedUrlResponse (
     val shortenedUrl: String,
-    val ttl: LocalDateTime?
+    val ttl: LocalDateTime
 )
