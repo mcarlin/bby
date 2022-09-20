@@ -1,0 +1,83 @@
+<html lang="en">
+
+<head>
+  <title>Bby</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/font.css"/>
+</head>
+
+<body class="bg-gray-100">
+<div class="bg-blue-600 px-2 sm:px-4 py-3 fixed w-full z-20 top-0 left-0 border-b border-gray-200">
+  <div class="container flex flex-wrap justify-between items-center mx-auto">
+    <a href="http://localhost:18080" class="flex items-center">
+      <img src="logo.svg" class="mr-3 h-6 sm:h-9" alt="Bby Logo">
+    </a>
+  </div>
+</div>
+
+<div class="flex items-center justify-center h-screen">
+  <div id="urlSubmission"
+       class="p-4 max-w-md mx-auto bg-white border-gray-200 border rounded-lg basis-2/3 flex-col items-center">
+    <p class="pb-0">Enter a <b>BIG</b> url to make a <span class="fancy">bbyurl</span></p>
+    <form id="urlForm" onsubmit="return createUrl()" class="flex flex-col gap-4 justify-evenly mb-0">
+      <label for="urlText"></label>
+      <input class="bg-gray-50 border p-2 text-grey-darkest flex-1 rounded-md" id="urlText" type="url"
+             placeholder="https://www.example.com" required=True/>
+      <input class="p-2 bg-sky-500 hover:bg-sky-700 rounded-md text-white" type="submit" value="Shorten"/>
+    </form>
+  </div>
+</div>
+
+<script>
+  function createUrl() {
+
+    let url = document.getElementById('urlText').value;
+
+    fetch('http://localhost:18080/v1/api/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(
+          {
+            'url': url,
+          },
+      ),
+    }).then(res => {
+      return res.json();
+    }).then(data => {
+      let shortenedUrl = `http://localhost:18080/u/${data['shortenedUrl']}`;
+      let createdUrl = createElementFromHTML(
+          '<div class="p-4 gap-2 max-w-md mx-auto bg-white border-gray-200 border rounded-lg basis-2/3 flex-col items-center">' +
+          '<p class="pb-0"><b>BIG</b> url</p>' +
+          `<p class="bg-gray-50 border p-2 text-grey-darkest flex-1 rounded-md">${url}</p>` +
+          '<p class="pb-0 fancy"><b>bbyurl</b></p>' +
+          '<div class="flex gap-x-3">' +
+          `<p id='bbyurl' class="bg-gray-50 border p-2 text-grey-darkest flex-1 rounded-md">${shortenedUrl}</p>` +
+          '<button onclick="copyBbyUrl()" class="flex-grow-0 px-4 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Copy</button>' +
+          '</div>' +
+          '</div>',
+      );
+      const sec = document.getElementById('urlSubmission');
+      sec.replaceWith(createdUrl);
+    }).catch((error) => {
+      console.log(error);
+    });
+
+    return false;
+  }
+
+  function copyBbyUrl() {
+    let copyText = document.getElementById('bbyurl');
+    navigator.clipboard.writeText(copyText.innerText);
+  }
+
+  function createElementFromHTML(htmlString) {
+    let div = document.createElement('div');
+    div.innerHTML = htmlString.trim();
+    return div.firstChild;
+  }
+</script>
+</body>
+
+</html>

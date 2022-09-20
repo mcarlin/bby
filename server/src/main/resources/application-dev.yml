@@ -1,4 +1,11 @@
+server:
+  port: 18080
 spring:
+#  web:
+#    resources:
+#      static-locations:
+#        - file:./src/main/resources/public/
+#        - classpath:/public/
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/bby
     username: bby

@@ -4,11 +4,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.net.URI
 import java.time.LocalDateTime
 
@@ -17,7 +13,7 @@ class UrlShortenerController (
     val shortenerService: UrlShortenerService,
 ) {
     @PostMapping(
-        "/",
+        "/v1/api/",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
@@ -28,8 +24,24 @@ class UrlShortenerController (
         return ResponseEntity.ok(ShortenedUrlResponse(shortenedUrl, ttl))
     }
 
-    @GetMapping("/{someId}")
+    @GetMapping("/api/v1/{someId}",
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
     suspend fun getShortened(@PathVariable("someId") someId: String): ResponseEntity<Unit> {
+        val url = shortenerService.getUrl(someId)
+        return if (url != null) {
+            val headers = HttpHeaders()
+            headers.location = URI.create(url.url)
+            ResponseEntity(headers, HttpStatus.MOVED_PERMANENTLY)
+        } else {
+            ResponseEntity.notFound().build()
+        }
+    }
+
+    @GetMapping("/u/{someId}",
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    suspend fun shortened(@PathVariable("someId") someId: String): ResponseEntity<Unit> {
         val url = shortenerService.getUrl(someId)
         return if (url != null) {
             val headers = HttpHeaders()

@@ -1,0 +1,13 @@
+
+@font-face {
+    font-family: 'milleniaregular';
+    src: url('millenia_personal_use-webfont.woff2') format('woff2'),
+    url('millenia_personal_use-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.fancy {
+    font-family: 'milleniaregular',cursive
+}
