@@ -1,0 +1,18 @@
+spring:
+  r2dbc:
+    pool:
+      initial-size: 100
+      max-size: 500
+      max-idle-time: 30m
+      validation-query: SELECT 1
+bby:
+  cleanupSchedule: "* 0 0 * * *"
+logging:
+  level:
+    root: info
+#    com.mcarlin: debug
+#    org:
+#      springframework:
+#        r2dbc: DEBUG
+#    io.r2dbc.postgresql.QUERY: DEBUG # for queries
+#    io.r2dbc.postgresql.PARAM: DEBUG # for parameters
