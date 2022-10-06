@@ -9,7 +9,7 @@
 <body class="bg-gray-100">
 <div class="bg-blue-600 px-2 sm:px-4 py-3 fixed w-full z-20 top-0 left-0 border-b border-gray-200">
   <div class="container flex flex-wrap justify-between items-center mx-auto">
-    <a href="http://localhost:18080" class="flex items-center">
+    <a href="{{URL}}" class="flex items-center">
       <img src="logo.svg" class="mr-3 h-6 sm:h-9" alt="Bby Logo">
     </a>
   </div>
@@ -33,7 +33,7 @@
 
     let url = document.getElementById('urlText').value;
 
-    fetch('http://localhost:18080/v1/api/', {
+    fetch('{{URL}}/v1/api/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -46,7 +46,7 @@
     }).then(res => {
       return res.json();
     }).then(data => {
-      let shortenedUrl = `http://localhost:18080/u/${data['shortenedUrl']}`;
+      let shortenedUrl = `{{URL}}/u/${data['shortenedUrl']}`;
       let createdUrl = createElementFromHTML(
           '<div class="p-4 gap-2 max-w-md mx-auto bg-white border-gray-200 border rounded-lg basis-2/3 flex-col items-center">' +
           '<p class="pb-0"><b>BIG</b> url</p>' +
