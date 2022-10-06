@@ -29,7 +29,6 @@ docker-backend:
     - apt-get update -y
     - apt-get install -y docker-ce
     - service docker start
-    - cd server/
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - export CONTAINER_FULL_IMAGE_NAME_WITH_TAG=${CI_REGISTRY_IMAGE}/bbyurl:$COMMIT_HASH
     - ./gradlew bootBuildImage --imageName="$CONTAINER_FULL_IMAGE_NAME_WITH_TAG"
