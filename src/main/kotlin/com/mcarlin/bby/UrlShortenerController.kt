@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 import java.time.LocalDateTime
-import javax.print.attribute.standard.Media
 
 @RestController
 class UrlShortenerController (
@@ -61,7 +60,7 @@ class UrlShortenerController (
         produces = [MediaType.TEXT_HTML_VALUE]
     )
     suspend fun index(): ResponseEntity<String> {
-        val template = resourceLoader.getResource("/templates/index.html").inputStream.bufferedReader().use { it.readText() }
+        val template = resourceLoader.getResource("classpath:templates/index.html").inputStream.bufferedReader().use { it.readText() }
         val index  = template.replace("{{URL}}", env.getRequiredProperty("bby.baseUrl"))
         return ResponseEntity.ok(index)
     }
